@@ -1,6 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
-// Get the RapidAPI key from environment variables
 const rapidApiKey = import.meta.env.VITE_RAPID_API_ARTICLE_KEY;
 
 export const articleApi = createApi({
@@ -8,19 +7,31 @@ export const articleApi = createApi({
     baseQuery: fetchBaseQuery({
         baseUrl: 'https://article-extractor-and-summarizer.p.rapidapi.com/',
         prepareHeaders: (headers) => {
-            // Set the required headers for RapidAPI
             headers.set('x-rapidapi-key', rapidApiKey);
             headers.set('x-rapidapi-host', 'article-extractor-and-summarizer.p.rapidapi.com');
-            return headers; // Return modified headers
+            return headers;
         },
     }),
     endpoints: (builder) => ({
-      
         getSummary: builder.query({
-            query: (params) => `/summarize?url=${encodeURIComponent(params.articleUrl)}&length=3`
+            query: (params) => `/summarize?url=${encodeURIComponent(params.articleUrl)}&length=3`,
         }),
-    })
+       
+        summarizeText: builder.mutation({
+            query: (params) => ({
+                url: '/summarize-text',
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: {
+                    lang: 'en', // Specify language if needed
+                    text: params.textContent, // Your actual text for summarization
+                },
+            }),
+        }),
+    }),
 });
 
-
-export const { useLazyGetSummaryQuery } = articleApi;
+// Export hooks for each query or mutation
+export const { useLazyGetSummaryQuery, useSummarizeTextMutation } = articleApi;

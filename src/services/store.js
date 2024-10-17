@@ -1,9 +1,14 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { articleApi } from "./article";
+import { youtubeApi } from "./transcript";
 
 export const store = configureStore({
     reducer: {
-        [articleApi.reducerPath]: articleApi.reducer
+        [articleApi.reducerPath]: articleApi.reducer,
+        [youtubeApi.reducerPath]: youtubeApi.reducer
     },
-    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(articleApi.middleware)
-})
+    middleware: (getDefaultMiddleware) =>
+        getDefaultMiddleware()
+            .concat(articleApi.middleware)
+            .concat(youtubeApi.middleware),
+});

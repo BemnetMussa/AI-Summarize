@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 
 import { copy, linkIcon, loader, tick } from "../assets";
-import { useLazyGetSummaryQuery } from "../services/article";
+import { useLazyGetSummaryQuery, useSummarizeTextMutation } from "../services/article";
+import { useLazyGetTranscriptQuery } from "../services/transcript";
 
 const Demo = () => {
   const [article, setArticle] = useState({
@@ -10,9 +11,11 @@ const Demo = () => {
   });
   const [allArticles, setAllArticles] = useState([]);
   const [copied, setCopied] = useState("");
-
   // RTK lazy query
   const [getSummary, { error, isFetching }] = useLazyGetSummaryQuery();
+  const [summarizeText, { erro, isFetchin}] = useSummarizeTextMutation();
+  const [getTranscript, {data: transcript}] = useLazyGetTranscriptQuery();
+
 
   // Load data from localStorage on mount
   useEffect(() => {
@@ -25,6 +28,7 @@ const Demo = () => {
     }
   }, []);
 
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -34,17 +38,54 @@ const Demo = () => {
 
     if (existingArticle) return setArticle(existingArticle);
 
-    const { data } = await getSummary({ articleUrl: article.url });
-    if (data?.summary) {
-      const newArticle = { ...article, summary: data.summary };
-      const updatedAllArticles = [newArticle, ...allArticles];
+    // Check if the URL is a YouTube link
+    if (article.url.includes('youtube.com') || article.url.includes('youtu.be')) {
+        // Extract video ID (you may need a more robust method for different URL formats)
+        const videoId = new URL(article.url).searchParams.get('v');
+        
+        // Fetch transcript from YouTube API
+        const transcriptResponse1 = await getTranscript(videoId);
+   
+        console.log(transcriptResponse1)
+        if (transcriptResponse1) {
+            // Pass the transcript to the summarization API
+            const transcriptResponse = transcriptResponse1.data.map((val) => {
+              return val
+            })
+  
+            const { data } = await summarizeText({ textContent: transcriptResponse[0].transcriptionAsText});
+            console.log(data)
+            
+            if (data?.summary) {
+                const newArticle = { ...article, summary: data.summary };
+                const updatedAllArticles = [newArticle, ...allArticles];
 
-      // update state and local storage
-      setArticle(newArticle);
-      setAllArticles(updatedAllArticles);
-      localStorage.setItem("articles", JSON.stringify(updatedAllArticles));
+                // Update state and local storage
+                setArticle(newArticle);
+                setAllArticles(updatedAllArticles);
+                localStorage.setItem("articles", JSON.stringify(updatedAllArticles));
+            }
+        } else {
+            console.error("Failed to fetch transcript");
+          
+        }
+    } else {
+        // Regular article summarization
+        const { data } = await getSummary({ articleUrl: article.url });
+        if (data?.summary) {
+            const newArticle = { ...article, summary: data.summary };
+            const updatedAllArticles = [newArticle, ...allArticles];
+
+            // Update state and local storage
+            setArticle(newArticle);
+            setAllArticles(updatedAllArticles);
+            localStorage.setItem("articles", JSON.stringify(updatedAllArticles));
+        } else {
+            console.error("Failed to fetch summary");
+        }
     }
-  };
+};
+
 
   // copy the url and toggle the icon for user feedback
   const handleCopy = (copyUrl) => {
@@ -53,11 +94,13 @@ const Demo = () => {
     setTimeout(() => setCopied(false), 3000);
   };
 
+
   const handleKeyDown = (e) => {
     if (e.keyCode === 13) {
       handleSubmit(e);
     }
   };
+
 
   return (
     <section className='mt-16 w-full max-w-xl'>
