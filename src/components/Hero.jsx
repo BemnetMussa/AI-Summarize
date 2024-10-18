@@ -13,12 +13,12 @@ function Hero() {
 
         <h1 className='head_text'>
             Summarize Articles with <br className='max-md:hidden'/>
-            <span className='orange_gradient'>OpenAi Gpt-4</span>
+            <span className='orange_gradient'>OpenAI Gpt-4</span>
         </h1>
-        <h2 className='desc'>Lorem ipsum dolor sit amet consectetur, 
-            adipisicing elit. Quidem unde, nisi placeat at dignissimos 
-            veritatis similique quibusdam explicabo blanditiis expedita 
-            sapiente aliquam corporis eaque repellat obcaecati nihil minus doloremque. Unde.</h2>
+        <h2 className='desc'>
+              Our AI Summarizer condenses long articles, research papers, and web pages into quick,
+               clear summaries. Save time and get the key points at a glance with the help of advanced AI, 
+               perfect for anyone looking to digest information faster.</h2>
     </header>
   )
 }

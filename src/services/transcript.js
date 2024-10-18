@@ -10,7 +10,7 @@ export const youtubeApi = createApi({
         prepareHeaders: (headers) => {
             headers.set('x-rapidapi-key', youtubeApiKey);
             headers.set('x-rapidapi-host',  'youtube-transcriptor.p.rapidapi.com');
-            console.log(headers)
+
             return headers;
         },
     }),

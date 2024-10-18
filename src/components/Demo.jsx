@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import { copy, linkIcon, loader, tick } from "../assets";
 import { useLazyGetSummaryQuery, useSummarizeTextMutation } from "../services/article";
 import { useLazyGetTranscriptQuery } from "../services/transcript";
+import { useGetSpeechMutation } from "../services/speech";
 
 const Demo = () => {
   const [article, setArticle] = useState({
@@ -15,6 +16,7 @@ const Demo = () => {
   const [getSummary, { error, isFetching }] = useLazyGetSummaryQuery();
   const [summarizeText, { erro, isFetchin}] = useSummarizeTextMutation();
   const [getTranscript, {data: transcript}] = useLazyGetTranscriptQuery();
+  const [getSpeech] = useGetSpeechMutation();
 
 
   // Load data from localStorage on mount
@@ -102,6 +104,26 @@ const Demo = () => {
   };
 
 
+  const speechActivated = async () => {
+    if (article.summary) {
+      const speechResponse = await getSpeech({ textSpeech: article.summary });
+     
+      if (speechResponse.data) {
+        const audio = new Audio(speechResponse.data[0].link); // The API should return an audio URL
+        console.log(audio)
+        await audio.play().catch(error => {
+          console.error("error: ", error)
+        });
+      
+      } else {
+        console.error("Failed to generate speech");
+      }
+    }
+  };
+
+
+
+
   return (
     <section className='mt-16 w-full max-w-xl'>
       {/* Search */}
@@ -182,6 +204,11 @@ const Demo = () => {
             </div>
           )
         )}
+        <div >
+          <button className="bg-blue-300 rounded-2xl px-4 py-2 font-bold hover:bg-blue-500 hover:text-white" onClick={speechActivated}>
+            Read Aloud
+          </button>
+        </div>
       </div>
     </section>
   );
