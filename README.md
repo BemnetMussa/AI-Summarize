@@ -2,7 +2,8 @@
 
 🚀 **AI Summarizer** is your personal AI assistant for quickly digesting content from YouTube videos and webpages! Whether you’re short on time or want to extract the key points, this tool uses the power of AI to generate concise, easy-to-understand summaries. It’s the perfect way to stay informed without having to watch full videos or read lengthy articles.
 
-![AI Summarizer](path-to-your-image.jpg) <!-- Replace with your image file path -->
+![AI Summarizer](public/Screenshot%202024-11-17%20122330.png)
+
 
 ## ✨ Key Features
 
