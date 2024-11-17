@@ -5,6 +5,9 @@
 /* 
   Note: The styles for this gradient grid background is heavily inspired by the creator of this amazing site (https://dub.sh) – all credits go to them! 
 */
+body {
+    background-color: rgb(203, 207, 201);
+}
 
 .main {
     width: 100vw;
@@ -25,6 +28,31 @@
     height: 100%;
     top: 0;
 }
+
+.heart {
+  width: 300px; /* Set width to 500px */
+  height: 300px; /* Set height to 500px */
+  background-color: rgba(13, 0, 255, 0.28);
+  position: absolute;
+  top: 45%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%; /* Make the heart shape a circle */
+  animation: heartbeat 3s infinite ease-in-out;  /* Slower animation */
+  filter: blur(10px);  /* Foggy effect */
+  box-shadow: 0 0 500px rgba(0, 0, 255, 0.7), 0 0 1000px rgba(0, 0, 255, 0.3); /* Larger shadow */
+  z-index: -10;
+}
+
+@keyframes heartbeat {
+  0%, 100% {
+    transform: translate(-50%, -50%) scale(0.8);
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.2);
+  }
+}
+
 
 .main:after {
     content: "";

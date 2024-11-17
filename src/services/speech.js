@@ -20,18 +20,20 @@ export const speechApi = createApi({
                 method: 'POST', // Set the method to POST
                 body: {
                 voice_obj: {
-                    id: 2014,
-                    voice_id: 'en-US-Neural2-A',
-                    gender: 'Male',
-                    language_code: 'en-US',
-                    language_name: 'US English',
-                    voice_name: 'John',
-                    sample_text: 'Hello, hope you are having a great time making your video.',
-                    sample_audio_url: 'https://s3.ap-south-1.amazonaws.com/invideo-uploads-ap-south-1/speechen-US-Neural2-A16831901130600.mp3',
-                    status: 2,
-                    rank: 0,
-                    type: 'google_tts',
+                    id:2013,
+                    voice_id:"en-GB-Neural2-F",
+                    gender:"Female",
+                    language_code:"en-GB",
+                    language_name:"British English",
+                    voice_name:"Holly",
+                    sample_text:"Hello, hope you're having a great time making your video.",
+                    sample_audio_url:"https://s3.ap-south-1.amazonaws.com/invideo-uploads-ap-south-1/speechen-GB-Neural2-F16831903681350.mp3",
+                    status:2,
+                    rank:0,
+                    type:"google_tts",
                     isPlaying: false
+
+                    
                 },
                    json_data: [
                     {
